@@ -8,5 +8,6 @@ ActiveRecord::Base.establish_connection(
   user: ENV['REDSHIFT_USER'],
   password: ENV['REDSHIFT_PASSWORD'],
   database: ENV['REDSHIFT_DATABASE'],
-  adapter: 'redshift'
+  adapter: 'redshift',
+  schema_search_path: 'master1'
 )

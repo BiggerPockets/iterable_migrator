@@ -3,6 +3,6 @@
 Bundler.require(:default)
 Dotenv.load
 
-require 'redshift'
-require 'models/redshift_base'
-require 'models/registered_for_webinar'
+require_relative 'redshift'
+require_relative 'models/redshift_base'
+require_relative 'models/registered_for_webinar'
