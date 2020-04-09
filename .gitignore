@@ -1,5 +1,6 @@
 *.csv
 *.txt
+.byebug_history
+.DS_Store
 .env
 .rubocop-*
-.byebug_history
