@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
+gem "activemodel"
 gem "activerecord"
 gem "activerecord5-redshift-adapter"
 gem "byebug"

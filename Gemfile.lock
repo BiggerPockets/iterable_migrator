@@ -78,6 +78,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activemodel
   activerecord
   activerecord5-redshift-adapter
   byebug
