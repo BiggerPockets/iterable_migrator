@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/inline'
 require 'csv'
 
@@ -92,20 +94,20 @@ ALLOWED_COLS = [
   'test_replaced_dashboard_with_itr',
   'test_skip_onboarding',
   'verified'
-]
+].freeze
 
 File.delete(OUTPUT_FILE_NAME) if File.exist?(OUTPUT_FILE_NAME)
 
 CSV.open(OUTPUT_FILE_NAME, 'wb') do |csv|
   CSV.foreach(INPUT_FILE_NAME, headers: true).with_index do |row, i|
     data = row.to_h.map do |k, v|
-      new_key = k.sub("gp:", "")
+      new_key = k.sub('gp:', '')
       next unless ALLOWED_COLS.include? new_key
 
       [new_key, v]
     end.compact.to_h
 
-    next if data["email"].squish.blank?
+    next if data['email'].squish.blank?
 
     csv << data.keys if i.zero? # CSV headers
     csv << data.values

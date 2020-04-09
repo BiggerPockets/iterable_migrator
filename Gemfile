@@ -2,4 +2,9 @@
 
 source 'https://rubygems.org'
 
+gem 'activerecord'
+gem 'activerecord5-redshift-adapter'
 gem 'byebug'
+gem 'dotenv'
+gem 'rubocop'
+gem 'rubocop-rails'
