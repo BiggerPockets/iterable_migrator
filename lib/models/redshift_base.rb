@@ -2,7 +2,7 @@
 
 require "active_record"
 
-class RedshiftBase < ApplicationRecord
+class RedshiftBase < ActiveRecord::Base
   establish_connection(
     host: ENV["REDSHIFT_HOST"],
     port: ENV["REDSHIFT_PORT"],
