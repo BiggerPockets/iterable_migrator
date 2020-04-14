@@ -22,8 +22,10 @@ class RedshiftBase < ActiveRecord::Base
   def self.migrate
     iterable_client = HTTP.headers("Api-Key" => ENV["ITERABLE_API_TOKEN"])
 
-    all.limit(1000).find_in_batches(batch_size: 1000).each.with_index do |rows, i|
-      puts "Processing #{self.class.name} batch #{i}"
+    puts "Migrating #{all.count} #{name} records"
+
+    all.find_in_batches(batch_size: 1000).with_index do |rows, i|
+      puts "Processing #{name} batch #{i}"
 
       events = rows.map(&:to_iterable_event)
 
@@ -31,7 +33,9 @@ class RedshiftBase < ActiveRecord::Base
 
       response = iterable_client.post("https://api.iterable.com/api/events/trackBulk", body: Oj.dump(body))
 
-      puts "Successes: #{Oj.load(response)["successCount"]} | Failures: #{Oj.load(response)["failCount"]}"
+      parsed_response = Oj.load(response)
+
+      puts "Successes: #{parsed_response["successCount"]} | Failures: #{parsed_response["failCount"]}"
     end
   end
 
@@ -60,9 +64,16 @@ class RedshiftBase < ActiveRecord::Base
     when :float
       attributes[attribute]&.to_f
     when :array
-      Oj.load(attributes[attribute])
+      Oj.load(attributes[attribute]) rescue []
     when :timestamp
-      attributes[attribute]&.iso8601
+      time = attributes[attribute]
+      if time.blank?
+        nil
+      elsif time.is_a?(String)
+        Time.parse(time).iso8601
+      else
+        time.iso8601
+      end
     when :boolean
       attributes[attribute].to_s.downcase == "true"
     end
