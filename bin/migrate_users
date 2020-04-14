@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require "bundler"
+require_relative "../lib/iterable_migrator"
+
+printf "WARNING - This will migrate records from your local CSV file to Iterable. Are you sure? N/y"
+prompt = STDIN.gets.chomp
+return unless prompt == "y"
+
+BlueshiftUser.migrate

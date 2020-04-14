@@ -12,7 +12,8 @@ class BlueshiftUser
   INPUT_FILE_PATH = File.join("data", "blueshift.csv")
 
   def self.migrate
-    CSV.new(File.open(INPUT_FILE_PATH), headers: true).lazy.each_slice(1000) do |rows|
+    CSV.new(File.open(INPUT_FILE_PATH), headers: true).lazy.each_slice(1000).with_index do |rows, i|
+      puts "Processing batch #{i}"
       users_endpoint = Iterable::Users.new
       users = rows.map { |row| new(row.to_h.slice(*attribute_types.keys)).to_iterable_properties.merge("preferUserId" => true, "mergeNestedObjects" => true) }
       response = users_endpoint.bulk_update(users)
@@ -101,7 +102,7 @@ class BlueshiftUser
   end
 
   def interests
-    extra_attributes["interests"] # Needs to be an array
+    Array(extra_attributes["interests"])
   end
 
   def last_active_at
@@ -127,7 +128,7 @@ class BlueshiftUser
   end
 
   def onboarding_page_responses
-    extra_attributes["onboarding_page_responses"] # Needs to be an array
+    Array(extra_attributes["onboarding_page_responses"])
   end
 
   def paid_until
