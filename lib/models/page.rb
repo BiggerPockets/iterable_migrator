@@ -4,6 +4,11 @@
 class Page < RedshiftBase
   self.table_name = "pages"
 
+
+  def self.migrate_recent
+    where("received_at BETWEEN '2019-04-01' AND '2020-12-31'").migrate
+  end
+
   def event
     "Loaded a Page"
   end

@@ -22,7 +22,9 @@ class RedshiftBase < ActiveRecord::Base
   def self.migrate
     iterable_client = HTTP.headers("Api-Key" => ENV["ITERABLE_API_TOKEN"])
 
-    all.limit(1000).find_in_batches(batch_size: 1000).each do |rows|
+    all.limit(1000).find_in_batches(batch_size: 1000).each.with_index do |rows, i|
+      puts "Processing #{self.class.name} batch #{i}"
+
       events = rows.map(&:to_iterable_event)
 
       body = { "events" => events }
