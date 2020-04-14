@@ -57,6 +57,10 @@ class RedshiftBase < ActiveRecord::Base
       attributes[attribute]&.to_i
     when :float
       attributes[attribute]&.to_f
+    when :array
+      Oj.load(attributes[attribute])
+    when :timestamp
+      attributes[attribute]&.iso8601
     when :boolean
       attributes[attribute].to_s.downcase == "true"
     end

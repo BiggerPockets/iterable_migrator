@@ -16,8 +16,8 @@ class RealEstateAgentLeadSubmitted < RedshiftBase
       "maximumPrice" => cast("maximum_price", :integer),
       "minimumPrice" => cast("minimum_price", :integer),
       "premium" => cast("premium", :boolean),
-      "propertyType" => cast("property_type", :string),
-      "strategies" => cast("strategies", :string),
+      "propertyTypes" => cast("property_types", :array),
+      "strategies" => cast("strategies", :array),
       "submission_type" => cast("submission_type", :string),
       "timeline" => cast("timeline", :string),
     }

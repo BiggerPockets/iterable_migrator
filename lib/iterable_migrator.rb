@@ -5,6 +5,7 @@ Dotenv.load
 
 require "csv"
 require_relative "models/redshift_base"
+require_relative "models/first_time_base"
 require_relative "blueshift_user"
 
 Dir[File.join(__dir__, "models", "*.rb")].each { |file| require file }

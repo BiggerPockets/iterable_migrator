@@ -1,6 +1,6 @@
 
 # frozen_string_literal: true
 
-class RenewalScore < RedshiftBase
-  self.table_name = "renewal_score"
+class FirstTimePremium < FirstTimeBase
+  self.table_name = "first_time_premium"
 end

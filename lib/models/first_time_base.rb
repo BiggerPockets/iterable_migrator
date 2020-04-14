@@ -1,16 +1,12 @@
 
 # frozen_string_literal: true
 
-class Page < RedshiftBase
-  self.table_name = "pages"
-
-  def event
-    "Loaded a Page"
-  end
+class FirstTimeBase < RedshiftBase
+  self.abstract_class = true
 
   def data_fields
     {
-      "city" => cast("city", :string),
+      "coupon" => cast("coupon", :string),
       "first_campaign" => cast("first_campaign", :string),
       "first_content" => cast("first_content", :string),
       "first_medium" => cast("first_medium", :string),
@@ -21,14 +17,10 @@ class Page < RedshiftBase
       "latest_medium" => cast("latest_medium", :string),
       "latest_source" => cast("latest_source", :string),
       "latest_term" => cast("latest_term", :string),
-      "path" => cast("path", :string),
-      "platform" => cast("platform", :string),
-      "referrer" => cast("referrer", :string),
-      "search" => cast("search", :string),
-      "state" => cast("state", :string),
-      "title" => cast("title", :string),
-      "url" => cast("url", :string),
-      "visitorType" => cast("visitor_type", :string),
+      "marketing" => cast("marketing", :boolean),
+      "plan_term" => cast("plan_term", :string),
+      "plan_type" => cast("plan_type", :string),
+      "used_coupon" => cast("used_coupon", :boolean),
     }
   end
 end
