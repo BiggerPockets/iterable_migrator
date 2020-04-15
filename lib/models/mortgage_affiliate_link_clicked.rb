@@ -4,6 +4,10 @@
 class MortgageAffiliateLinkClicked < RedshiftBase
   self.table_name = "mortgage_affiliate_link_clicked"
 
+  def event
+    "Mortgage affiliate link clicked"
+  end
+
   def data_fields
     {
       "affiliateId" => cast("affiliate_id", :integer),

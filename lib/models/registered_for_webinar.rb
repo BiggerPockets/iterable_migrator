@@ -5,6 +5,10 @@ class RegisteredForWebinar < RedshiftBase
 
   # 930477
 
+  def event
+    "Registered for Webinar"
+  end
+
   def data_fields
     {
       "campaign" => campaign,

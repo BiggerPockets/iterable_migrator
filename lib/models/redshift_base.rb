@@ -19,9 +19,11 @@ class RedshiftBase < ActiveRecord::Base
     true
   end
 
-  def self.migrate
-    iterable_client = HTTP.headers("Api-Key" => ENV["ITERABLE_API_TOKEN"])
+  def self.iterable_client
+    @iterable_client ||= HTTP.headers("Api-Key" => ENV["ITERABLE_API_TOKEN"])
+  end
 
+  def self.migrate
     puts "Migrating #{all.count} #{name} records"
 
     all.find_in_batches(batch_size: 1000).with_index do |rows, i|

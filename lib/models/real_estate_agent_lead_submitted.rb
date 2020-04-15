@@ -6,6 +6,10 @@ class RealEstateAgentLeadSubmitted < RedshiftBase
 
   # 3231
 
+  def event
+    "Real Estate Agent Lead Submitted"
+  end
+
   def data_fields
     {
       "approvalStatus" => cast("approval_status", :string),

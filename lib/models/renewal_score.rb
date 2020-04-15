@@ -6,6 +6,10 @@ class RenewalScore < RedshiftBase
 
   # 27590
 
+  def event
+    "renewal_score"
+  end
+
   def data_fields
     {
       "score" => cast("score", :float)

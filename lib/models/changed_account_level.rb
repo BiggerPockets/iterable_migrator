@@ -4,6 +4,10 @@
 class ChangedAccountLevel < RedshiftBase
   self.table_name = "changed_account_level"
 
+  def event
+    "Changed Account Level"
+  end
+
   def data_fields
     {
       "companySlug" => cast("company_slug", :string),
