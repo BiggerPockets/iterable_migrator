@@ -17,7 +17,8 @@ class BlueshiftUser
       users_endpoint = Iterable::Users.new
       users = rows.map { |row| new(row.to_h.slice(*attribute_types.keys)).to_iterable_properties.merge("preferUserId" => true, "mergeNestedObjects" => true) }
       response = users_endpoint.bulk_update(users)
-      puts response
+
+      puts "Successes: #{response.body["successCount"]} | Failures: #{response.body["failCount"]}"
     end
   end
 
