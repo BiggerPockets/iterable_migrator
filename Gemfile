@@ -12,3 +12,4 @@ gem "iterable-api-client"
 gem "oj"
 gem "rubocop", "0.74"
 gem "rubocop-rails"
+gem "httplog", require: false

@@ -72,9 +72,9 @@ class RedshiftBase < ActiveRecord::Base
       if time.blank?
         nil
       elsif time.is_a?(String)
-        Time.parse(time).iso8601
+        Time.parse(time).iso8601(3)
       else
-        time.iso8601
+        time.iso8601(3)
       end
     when :boolean
       attributes[attribute].to_s.downcase == "true"

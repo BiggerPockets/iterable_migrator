@@ -9,14 +9,22 @@ class BlueshiftUser
   attribute :last_visit_at, :string
   attribute :custom_attributes, :string
 
+  # INPUT_FILE_PATH = File.join("data", "blueshift_sample.csv")
   INPUT_FILE_PATH = File.join("data", "blueshift.csv")
 
   def self.migrate
-    CSV.new(File.open(INPUT_FILE_PATH), headers: true).lazy.each_slice(1000).with_index do |rows, i|
+    users_endpoint = Iterable::Users.new
+
+    CSV.new(File.open(INPUT_FILE_PATH), headers: true).lazy.each_slice(2000).with_index do |rows, i|
       puts "Processing batch #{i}"
-      users_endpoint = Iterable::Users.new
+
+      # Bulk update
       users = rows.map { |row| new(row.to_h.slice(*attribute_types.keys)).to_iterable_properties.merge("preferUserId" => true, "mergeNestedObjects" => true) }
       response = users_endpoint.bulk_update(users)
+      
+      # Single update (for sample data load)
+      # user = new(rows.first.to_h.slice(*attribute_types.keys))
+      # response = users_endpoint.update(user.email, user.to_iterable_properties.merge("preferUserId" => true))
 
       puts "Successes: #{response.body["successCount"]} | Failures: #{response.body["failCount"]}"
     end
@@ -77,7 +85,7 @@ class BlueshiftUser
   def created
     return unless extra_attributes["created"].present?
 
-    DateTime.parse(extra_attributes["created"])
+    DateTime.parse(extra_attributes["created"]).iso8601(3)
   end
 
   def created_in_month
@@ -87,15 +95,11 @@ class BlueshiftUser
   def date
     return unless extra_attributes["date"].present?
 
-    DateTime.parse(extra_attributes["date"])
+    DateTime.parse(extra_attributes["date"]).iso8601(3)
   end
 
   def deactivated
     extra_attributes["deactivated"].to_s.downcase == "true"
-  end
-
-  def email
-    super
   end
 
   def first_name
@@ -109,7 +113,7 @@ class BlueshiftUser
   def last_active_at
     return unless extra_attributes["last_active_at"].present?
 
-    DateTime.parse(extra_attributes["last_active_at"])
+    DateTime.parse(extra_attributes["last_active_at"]).iso8601(3)
   end
 
   def last_name
@@ -117,7 +121,7 @@ class BlueshiftUser
   end
 
   def last_visit_at
-    DateTime.parse(super) if super.present?
+    DateTime.parse(super).iso8601(3) if super.present?
   end
 
   def login
@@ -135,7 +139,7 @@ class BlueshiftUser
   def paid_until
     return unless extra_attributes["paid_until"].present?
 
-    DateTime.parse(extra_attributes["paid_until"])
+    DateTime.parse(extra_attributes["paid_until"]).iso8601(3)
   end
 
   def plan_term
