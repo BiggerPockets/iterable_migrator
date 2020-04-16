@@ -17,14 +17,17 @@ class BlueshiftUser
   def self.migrate(file: :default)
     users_endpoint = Iterable::Users.new
 
-    CSV.new(File.open(FILE_PATHS.fetch(file)), headers: true).lazy.each_slice(2000).with_index do |rows, i|
+    CSV.new(File.open(FILE_PATHS.fetch(file)), headers: true).lazy.each_slice(1000).with_index do |rows, i|
       puts "Processing batch #{i}"
+      next if i < 1129
 
       # Bulk update
       users = rows.map { |row| new(row.to_h.slice(*attribute_types.keys)).to_iterable_properties.merge("preferUserId" => true, "mergeNestedObjects" => true) }
       response = users_endpoint.bulk_update(users)
 
       puts "Successes: #{response.body["successCount"]} | Failures: #{response.body["failCount"]}"
+    rescue Net::ReadTimeout
+      retry
     end
   end
 
@@ -204,5 +207,8 @@ class BlueshiftUser
 
   def extra_attributes
     @extra_attributes ||= Oj.load(custom_attributes.gsub("=>", ":"))
+  rescue
+    puts "Invalid custom attributes"
+    {}
   end
 end

@@ -54,6 +54,10 @@ class Page
 
         rows.clear
       end
+
+    rescue Net::ReadTimeout
+      puts "Timeout. Retrying."
+      retry
     end
   end
 

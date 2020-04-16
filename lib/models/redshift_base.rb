@@ -38,6 +38,9 @@ class RedshiftBase < ActiveRecord::Base
       parsed_response = Oj.load(response)
 
       puts "Successes: #{parsed_response["successCount"]} | Failures: #{parsed_response["failCount"]}"
+    rescue Net::ReadTimeout
+      puts "Timeout. Retrying."
+      retry
     end
   end
 
