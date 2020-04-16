@@ -9,13 +9,15 @@ class BlueshiftUser
   attribute :last_visit_at, :string
   attribute :custom_attributes, :string
 
-  # INPUT_FILE_PATH = File.join("data", "blueshift_sample.csv")
-  INPUT_FILE_PATH = File.join("data", "blueshift.csv")
+  FILE_PATHS = {
+    sample: File.join("data", "blueshift_sample.csv"),
+    default: File.join("data", "blueshift.csv"),
+  }
 
-  def self.migrate
+  def self.migrate(file: :default)
     users_endpoint = Iterable::Users.new
 
-    CSV.new(File.open(INPUT_FILE_PATH), headers: true).lazy.each_slice(2000).with_index do |rows, i|
+    CSV.new(File.open(FILE_PATHS.fetch(file)), headers: true).lazy.each_slice(2000).with_index do |rows, i|
       puts "Processing batch #{i}"
 
       # Bulk update
