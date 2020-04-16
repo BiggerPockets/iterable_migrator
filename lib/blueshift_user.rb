@@ -21,17 +21,12 @@ class BlueshiftUser
       # Bulk update
       users = rows.map { |row| new(row.to_h.slice(*attribute_types.keys)).to_iterable_properties.merge("preferUserId" => true, "mergeNestedObjects" => true) }
       response = users_endpoint.bulk_update(users)
-      
-      # Single update (for sample data load)
-      # user = new(rows.first.to_h.slice(*attribute_types.keys))
-      # response = users_endpoint.update(user.email, user.to_iterable_properties.merge("preferUserId" => true))
 
       puts "Successes: #{response.body["successCount"]} | Failures: #{response.body["failCount"]}"
     end
   end
 
   def to_iterable_properties
-    ### TODO! ADD WEBINAR AND BOOK PROMOTION BOOLS
     {
       "email" => email,
       "userId" => retailer_customer_id,
@@ -57,14 +52,14 @@ class BlueshiftUser
         "plan_type" => plan_type,
         "profile_complete" => profile_complete,
         "subscribed" => subscribed,
-        "test_announcements_notifications_split" => test_announcements_notifications_split,
-        "test_dashboard_checklist" => test_dashboard_checklist,
-        "test_dashboard_checklist_vendor" => test_dashboard_checklist_vendor,
-        "test_improved_feed" => test_improved_feed,
-        "test_prepopulate_goal_tracker" => test_prepopulate_goal_tracker,
-        "test_ptp_calculator_on_dashboard" => test_ptp_calculator_on_dashboard,
-        "test_replaced_dashboard_with_itr" => test_replaced_dashboard_with_itr,
-        "test_skip_onboarding" => test_skip_onboarding,
+        "Test: announcements_notifications_split" => test_announcements_notifications_split,
+        "Test: dashboard_checklist" => test_dashboard_checklist,
+        "Test: dashboard_checklist_vendor" => test_dashboard_checklist_vendor,
+        "Test: improved_feed" => test_improved_feed,
+        "Test: prepopulate_goal_tracker" => test_prepopulate_goal_tracker,
+        "Test: ptp_calculator_on_dashboard" => test_ptp_calculator_on_dashboard,
+        "Test: replaced_dashboard_with_itr" => test_replaced_dashboard_with_itr,
+        "Test: skip_onboarding" => test_skip_onboarding,
         "verified" => verified,
         "webinar" => webinar,
       }

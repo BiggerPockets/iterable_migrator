@@ -36,7 +36,7 @@ class Page
 
     # Feeds the DB with the query it will run
     # But it does NOT execute it yet!
-    connection.send_query('SELECT * FROM "pages" WHERE "pages"."received_at" > \'2019-10-11\'')
+    connection.send_query('SELECT * FROM "pages" WHERE "pages"."received_at" > \'2019-04-01\'')
 
     # This line alone would solve our problems, as it sets DB’s mode
     # as single line, which instead of sending the results all at once,
