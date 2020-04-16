@@ -37,6 +37,7 @@ class BlueshiftUser
       "userId" => retailer_customer_id,
       "dataFields" => {
         "alerts_count" => alerts_count,
+        "book_promotion" => book_promotion,
         "colleagues_count" => colleagues_count,
         "company" => company,
         "created" => created,
@@ -65,6 +66,7 @@ class BlueshiftUser
         "test_replaced_dashboard_with_itr" => test_replaced_dashboard_with_itr,
         "test_skip_onboarding" => test_skip_onboarding,
         "verified" => verified,
+        "webinar" => webinar,
       }
     }
   end
@@ -73,6 +75,10 @@ class BlueshiftUser
 
   def alerts_count
     extra_attributes["alerts_count"]&.to_i 
+  end
+
+  def book_promotion
+    extra_attributes["book_promotion"].to_s.downcase == "true"
   end
 
   def colleagues_count
@@ -193,6 +199,10 @@ class BlueshiftUser
 
   def verified
     extra_attributes["verified"].to_s.downcase == "true"
+  end
+
+  def webinar
+    extra_attributes["webinar"].to_s.downcase == "true"
   end
 
   def extra_attributes
