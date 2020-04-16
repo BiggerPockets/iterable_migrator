@@ -6,6 +6,7 @@ class Page
 
   attribute :id, :string
   attribute :user_id, :string
+  attribute :anonymous_id, :string
   attribute :received_at, :string
 
   attribute :city, :string
@@ -35,7 +36,7 @@ class Page
 
     # Feeds the DB with the query it will run
     # But it does NOT execute it yet!
-    connection.send_query('SELECT * FROM "pages" WHERE "pages"."received_at" > \'2019-04-02\'')
+    connection.send_query('SELECT * FROM "pages" WHERE "pages"."received_at" > \'2019-10-11\'')
 
     # This line alone would solve our problems, as it sets DB’s mode
     # as single line, which instead of sending the results all at once,
@@ -48,7 +49,7 @@ class Page
     connection.get_result.stream_each do |row|
       rows << Page.new(row.slice(*attribute_types.keys))
 
-      if rows.size >= 4999
+      if rows.size >= 5000
         process_batch(rows)
 
         rows.clear
@@ -77,9 +78,9 @@ class Page
   def to_iterable_event
     {
       "eventName" => event,
-      "userId" => user_id,
+      "userId" => user_id || anonymous_id,
       "id" => id,
-      "createdAt" => received_at.to_i,
+      "createdAt" => DateTime.parse(received_at).to_i,
       "dataFields" => data_fields,
     }
   end

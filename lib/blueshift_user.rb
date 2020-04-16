@@ -31,6 +31,7 @@ class BlueshiftUser
   end
 
   def to_iterable_properties
+    ### TODO! ADD WEBINAR AND BOOK PROMOTION BOOLS
     {
       "email" => email,
       "userId" => retailer_customer_id,

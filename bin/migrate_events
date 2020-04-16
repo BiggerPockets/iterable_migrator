@@ -15,5 +15,6 @@ MortgageAffiliateLinkClicked.limit(1000).migrate
 RealEstateAgentLeadSubmitted.limit(1000).migrate
 RegisteredForWebinar.limit(1000).migrate
 RenewalScore.limit(1000).migrate
+PurchasedBook.limit(1000).migrate
 
 Page.migrate
