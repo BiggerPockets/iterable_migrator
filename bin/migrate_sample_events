@@ -7,12 +7,13 @@ printf "WARNING - This will migrate event records from Redshift to Iterable. Are
 prompt = STDIN.gets.chomp
 return unless prompt == "y"
 
-ChangedAccountLevel.limit(2).migrate
-FirstTimePlus.limit(2).migrate
-FirstTimePremium.limit(2).migrate
-FirstTimePro.limit(2).migrate
-MortgageAffiliateLinkClicked.limit(2).migrate
-RealEstateAgentLeadSubmitted.limit(2).migrate
-RegisteredForWebinar.limit(2).migrate
-RenewalScore.limit(2).migrate
-PurchasedBook.limit(2).migrate
+ChangedAccountLevel.limit(5000).migrate
+FirstTimePlus.limit(5000).migrate
+FirstTimePremium.limit(5000).migrate
+FirstTimePro.limit(5000).migrate
+MortgageAffiliateLinkClicked.limit(5000).migrate
+RealEstateAgentLeadSubmitted.limit(5000).migrate
+RegisteredForWebinar.limit(5000).migrate
+RenewalScore.limit(5000).migrate
+PurchasedBook.limit(5000).migrate
+Page.migrate

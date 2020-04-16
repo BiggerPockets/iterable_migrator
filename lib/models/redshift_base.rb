@@ -26,7 +26,7 @@ class RedshiftBase < ActiveRecord::Base
   def self.migrate
     puts "Migrating #{all.count} #{name} records"
 
-    all.find_in_batches(batch_size: 1000).with_index do |rows, i|
+    all.find_in_batches(batch_size: 5000).with_index do |rows, i|
       puts "Processing #{name} batch #{i}"
 
       events = rows.map(&:to_iterable_event)

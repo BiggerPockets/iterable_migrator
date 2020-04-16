@@ -4,6 +4,9 @@
 class PurchasedBook < RedshiftBase
   self.table_name = "purchased_book"
 
+  # disable STI
+  self.inheritance_column = :_type_disabled
+
   # 100728
 
   def event
