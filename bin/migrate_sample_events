@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require "bundler"
+require_relative "../lib/iterable_migrator"
+
+printf "WARNING - This will migrate event records from Redshift to Iterable. Are you sure? N/y"
+prompt = STDIN.gets.chomp
+return unless prompt == "y"
+
+ChangedAccountLevel.limit(2).migrate
+FirstTimePlus.limit(2).migrate
+FirstTimePremium.limit(2).migrate
+FirstTimePro.limit(2).migrate
+MortgageAffiliateLinkClicked.limit(2).migrate
+RealEstateAgentLeadSubmitted.limit(2).migrate
+RegisteredForWebinar.limit(2).migrate
+RenewalScore.limit(2).migrate
+PurchasedBook.limit(2).migrate
