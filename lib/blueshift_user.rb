@@ -19,10 +19,9 @@ class BlueshiftUser
 
     CSV.new(File.open(FILE_PATHS.fetch(file)), headers: true).lazy.each_slice(1000).with_index do |rows, i|
       puts "Processing batch #{i}"
-      next if i < 1129
 
       # Bulk update
-      users = rows.map { |row| new(row.to_h.slice(*attribute_types.keys)).to_iterable_properties.merge("preferUserId" => true, "mergeNestedObjects" => true) }
+      users = rows.map { |row| new(row.to_h.slice(*attribute_types.keys)).to_iterable_properties.merge("preferUserId" => false, "mergeNestedObjects" => true) }
       response = users_endpoint.bulk_update(users)
 
       puts "Successes: #{response.body["successCount"]} | Failures: #{response.body["failCount"]}"
@@ -31,42 +30,51 @@ class BlueshiftUser
     end
   end
 
+  # def to_iterable_properties
+  #   {
+  #     "email" => email,
+  #     "userId" => retailer_customer_id,
+  #     "dataFields" => {
+  #       "alerts_count" => alerts_count,
+  #       "book_promotion" => book_promotion,
+  #       "colleagues_count" => colleagues_count,
+  #       "company" => company,
+  #       "created" => created,
+  #       "created_in_month" => created_in_month,
+  #       "date" => date,
+  #       "deactivated" => deactivated,
+  #       "first_name" => first_name,
+  #       "interests" => interests,
+  #       "last_active_at" => last_active_at,
+  #       "last_visit_at" => last_visit_at,
+  #       "last_name" => last_name,
+  #       "login" => login,
+  #       "marketing" => marketing,
+  #       "onboarding_page_responses" => onboarding_page_responses,
+  #       "paid_until" => paid_until,
+  #       "plan_term" => plan_term,
+  #       "plan_type" => plan_type,
+  #       "profile_complete" => profile_complete,
+  #       "subscribed" => subscribed,
+  #       "Test: announcements_notifications_split" => test_announcements_notifications_split,
+  #       "Test: dashboard_checklist" => test_dashboard_checklist,
+  #       "Test: dashboard_checklist_vendor" => test_dashboard_checklist_vendor,
+  #       "Test: improved_feed" => test_improved_feed,
+  #       "Test: prepopulate_goal_tracker" => test_prepopulate_goal_tracker,
+  #       "Test: ptp_calculator_on_dashboard" => test_ptp_calculator_on_dashboard,
+  #       "Test: replaced_dashboard_with_itr" => test_replaced_dashboard_with_itr,
+  #       "Test: skip_onboarding" => test_skip_onboarding,
+  #       "verified" => verified,
+  #       "webinar" => webinar,
+  #     }
+  #   }
+  # end
+
   def to_iterable_properties
     {
       "email" => email,
-      "userId" => retailer_customer_id,
       "dataFields" => {
-        "alerts_count" => alerts_count,
-        "book_promotion" => book_promotion,
-        "colleagues_count" => colleagues_count,
-        "company" => company,
-        "created" => created,
-        "created_in_month" => created_in_month,
-        "date" => date,
-        "deactivated" => deactivated,
-        "first_name" => first_name,
-        "interests" => interests,
-        "last_active_at" => last_active_at,
         "last_visit_at" => last_visit_at,
-        "last_name" => last_name,
-        "login" => login,
-        "marketing" => marketing,
-        "onboarding_page_responses" => onboarding_page_responses,
-        "paid_until" => paid_until,
-        "plan_term" => plan_term,
-        "plan_type" => plan_type,
-        "profile_complete" => profile_complete,
-        "subscribed" => subscribed,
-        "Test: announcements_notifications_split" => test_announcements_notifications_split,
-        "Test: dashboard_checklist" => test_dashboard_checklist,
-        "Test: dashboard_checklist_vendor" => test_dashboard_checklist_vendor,
-        "Test: improved_feed" => test_improved_feed,
-        "Test: prepopulate_goal_tracker" => test_prepopulate_goal_tracker,
-        "Test: ptp_calculator_on_dashboard" => test_ptp_calculator_on_dashboard,
-        "Test: replaced_dashboard_with_itr" => test_replaced_dashboard_with_itr,
-        "Test: skip_onboarding" => test_skip_onboarding,
-        "verified" => verified,
-        "webinar" => webinar,
       }
     }
   end
@@ -74,7 +82,7 @@ class BlueshiftUser
   private
 
   def alerts_count
-    extra_attributes["alerts_count"]&.to_i 
+    extra_attributes["alerts_count"]&.to_i
   end
 
   def book_promotion

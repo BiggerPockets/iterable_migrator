@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+require "bundler"
+require_relative "../lib/iterable_migrator"
+
+str = File.read(File.join("data", "mailchimp", "subscribed_emails.csv")).scrub
+mailchimp_emails = CSV.parse(str, headers: true).map do |row|
+  row["Email Address"].downcase.strip
+end
+
+iterable_emails = CSV.read(File.join("data", "iterable", "list.csv"), headers: true).map do |row|
+  row["email"].downcase.strip
+end
+
+iterable_email_set = iterable_emails.to_set
+mailchimp_email_set = mailchimp_emails.to_set
+
+puts "Iterable emails not in Mailchimp"
+difference = (iterable_email_set - mailchimp_email_set)
+puts difference.size
+
+
+puts "Mailchimp emails not in Iterable"
+difference = (mailchimp_email_set - iterable_email_set)
+puts difference.size
+
+
+CSV.open(File.join("data", "mailchimp", "difference.csv"), "wb") do |csv|
+  CSV.parse(str, headers: true).map.with_index(1) do |row, i|
+    row_hash = row.to_h
+
+    csv << row_hash.keys if i == 1
+
+    next unless difference.include? row_hash["Email Address"].downcase.strip
+
+    csv << row_hash.values
+  end
+end
