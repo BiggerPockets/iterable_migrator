@@ -24,6 +24,7 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.5)
+    excon (0.73.0)
     ffi (1.12.2)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -46,6 +47,10 @@ GEM
     iterable-api-client (0.3.0)
       multi_json (>= 1.12.0)
     jaro_winkler (1.5.4)
+    json (1.8.6)
+    mandrill-api (1.0.53)
+      excon (>= 0.16.0, < 1.0)
+      json (>= 1.7.7, < 2.0)
     minitest (5.14.0)
     multi_json (1.14.1)
     oj (3.10.6)
@@ -89,6 +94,7 @@ DEPENDENCIES
   http
   httplog
   iterable-api-client
+  mandrill-api
   oj
   rubocop (= 0.74)
   rubocop-rails
