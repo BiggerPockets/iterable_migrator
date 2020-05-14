@@ -7,8 +7,11 @@ class MandrillTemplate
     new.migrate
   end
 
+  ITERABLE_TRANSACTIONAL_MESSAGE_TYPE_ID = 32372
+
   def initialize
     @conditionals = []
+    @changed_subjects = []
   end
 
   def migrate
@@ -19,18 +22,27 @@ class MandrillTemplate
 
       puts slug.to_s
 
+      subject = if template["subject"].to_s.include? "{"
+        @changed_subjects << [slug, template["subject"]]
+
+        "{{ subject }}"
+      else
+        template["subject"]
+      end
+
       response = iterable_endpoint.upsert(
         slug,
         metadata: {
           name: "Transactional: #{slug}",
         },
         name: "Transactional: #{slug}",
-        subject: (template["subject"] unless template["subject"].to_s.include? "{") || "{{ subject }}",
+        clientTemplateId: slug,
+        subject: subject,
         #fromName: template["from_name"],
         #fromEmail: template["from_email"],
         html: transform_to_handlebars(slug, template["code"]),
         plainText: transform_to_handlebars(slug, template["text"]),
-        messageTypeId: 35464
+        messageTypeId: ITERABLE_TRANSACTIONAL_MESSAGE_TYPE_ID
       )
 
       unless response.success?
@@ -39,8 +51,9 @@ class MandrillTemplate
       end
     end
 
-    puts "Failures: \n#{failures.join("\n")}"
-    puts "Templates with conditionals: \n#{@conditionals.join("\n")}"
+    puts "* Failures: \n#{failures.uniq.join("\n")}"
+    puts "* Subjects changed: \n#{@changed_subjects.join("\n")}"
+    puts "* Templates with conditionals: \n#{@conditionals.uniq.join("\n")}"
   end
 
   private
